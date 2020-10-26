@@ -1,3 +1,5 @@
 #!/bin/sh
 
-launch-chrome -p="socks5://127.0.0.1:9050" -n
+# support multiple sessions
+# simply use the seconds as a session name
+launch-chrome -p="socks5://127.0.0.1:9050" -n -s=$(date +%s)
