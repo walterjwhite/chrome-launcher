@@ -1,0 +1,38 @@
+#!/bin/sh
+
+. _APPLICATION_CONFIG_PATH_
+
+. _LIBRARY_PATH_/_APPLICATION_NAME_/instance.sh
+. _LIBRARY_PATH_/_APPLICATION_NAME_/cli.sh
+
+trap _cleanup INT 0 2
+
+_cleanup() {
+	if [ -e $_SESSION_PATH ]
+	then
+		warn "Removing $_SESSION_PATH"
+
+		# remove session directory
+		$_RUN_AS_COMMAND rm -rf $(head -1 $_SESSION_PATH)
+
+		# remove session conf
+		rm -rf $_SESSION_PATH
+	fi
+}
+
+_launch() {
+	# https://unix.stackexchange.com/questions/153210/cannot-redirect-output-from-sed
+	# https://stackoverflow.com/questions/7161821/how-to-grep-a-continuous-stream
+	if [ ! -e $_SESSION_PATH ] || [ -n "$_BROWSER_REMOTE_PORT"]
+	then
+		echo "$_INSTANCE_DIRECTORY" >> $_SESSION_PATH
+
+		$_COMMAND 2>&1\
+			| $_GNU_GREP --line-buffered -Po "ws://127.0.0.1:[\d]{3,6}/devtools/browser/[a-z\d]{8}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{12}"\
+			>> $_SESSION_PATH
+	else
+		$_COMMAND 2> /dev/null &
+	fi
+}
+
+_launch
