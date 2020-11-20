@@ -10,13 +10,16 @@ trap _cleanup INT 0 2
 _cleanup() {
 	if [ -e $_SESSION_PATH ]
 	then
-		warn "Removing $_SESSION_PATH"
+		if [ -n "$_CLEANUP" ]
+		then
+			warn "Removing $_SESSION_PATH"
 
-		# remove session directory
-		$_RUN_AS_COMMAND rm -rf $(head -1 $_SESSION_PATH)
+			# remove session directory
+			$_RUN_AS_COMMAND rm -rf $(head -1 $_SESSION_PATH)
 
-		# remove session conf
-		rm -rf $_SESSION_PATH
+			# remove session conf
+			rm -rf $_SESSION_PATH
+		fi
 	fi
 }
 
@@ -25,6 +28,8 @@ _launch() {
 	# https://stackoverflow.com/questions/7161821/how-to-grep-a-continuous-stream
 	if [ ! -e $_SESSION_PATH ] || [ -n "$_BROWSER_REMOTE_PORT"]
 	then
+		_CLEANUP=1
+
 		echo "$_INSTANCE_DIRECTORY" >> $_SESSION_PATH
 
 		$_COMMAND 2>&1\
