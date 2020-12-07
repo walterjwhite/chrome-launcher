@@ -16,11 +16,13 @@ _new_instance(){
 	# prepare instance
 	$_RUN_AS_COMMAND mkdir -p ${_INSTANCE_DIRECTORY}/Default
 
-	$_SUDO_COMMAND cp ~/.config/chromium/Default/Preferences "$_INSTANCE_DIRECTORY/Default/Preferences"
+	$_SUDO_COMMAND cp -R ~/.config/chromium/Default/Preferences "$_INSTANCE_DIRECTORY/Default/"
+	$_SUDO_COMMAND cp -R ~/.config/chromium/Default/Extensions "$_INSTANCE_DIRECTORY/Default/"
 
     if [ -n "$_RUN_AS_USER" ]
     then
 	    $_SUDO_COMMAND chown -R $_RUN_AS_USER "$_INSTANCE_DIRECTORY/Default/Preferences"
+	    $_SUDO_COMMAND chown -R $_RUN_AS_USER "$_INSTANCE_DIRECTORY/Default/Extensions"
     fi
 
 	# automatically update configuration
