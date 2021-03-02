@@ -4,14 +4,15 @@
 
 . _LIBRARY_PATH_/_APPLICATION_NAME_/instance.sh
 . _LIBRARY_PATH_/_APPLICATION_NAME_/cli.sh
+. _LIBRARY_PATH_/_APPLICATION_NAME_/history.sh
 
 trap _cleanup INT 0 2
 
 _cleanup() {
-	if [ -e $_SESSION_PATH ]
-	then
-		if [ -n "$_CLEANUP" ]
-		then
+	if [ -e $_SESSION_PATH ]; then
+		_export_history
+
+		if [ -n "$_CLEANUP" ]; then
 			warn "Removing $_SESSION_PATH"
 
 			# remove session directory
@@ -26,17 +27,15 @@ _cleanup() {
 _launch() {
 	# https://unix.stackexchange.com/questions/153210/cannot-redirect-output-from-sed
 	# https://stackoverflow.com/questions/7161821/how-to-grep-a-continuous-stream
-	if [ ! -e $_SESSION_PATH ] || [ -n "$_BROWSER_REMOTE_PORT"]
-	then
+	if [ ! -e $_SESSION_PATH ] || [ -n "$_BROWSER_REMOTE_PORT"]; then
 		_CLEANUP=1
 
-		echo "$_INSTANCE_DIRECTORY" >> $_SESSION_PATH
+		echo "$_INSTANCE_DIRECTORY" >>$_SESSION_PATH
 
-		$_COMMAND 2>&1\
-			| $_GNU_GREP --line-buffered -Po "ws://127.0.0.1:[\d]{3,6}/devtools/browser/[a-z\d]{8}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{12}"\
-			>> $_SESSION_PATH
+		$_COMMAND 2>&1 | $_GNU_GREP --line-buffered -Po "ws://127.0.0.1:[\d]{3,6}/devtools/browser/[a-z\d]{8}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{12}" \
+			>>$_SESSION_PATH
 	else
-		$_COMMAND 2> /dev/null
+		$_COMMAND 2>/dev/null
 	fi
 }
 

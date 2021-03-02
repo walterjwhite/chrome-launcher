@@ -1,0 +1,14 @@
+#!/bin/sh
+
+for _ARG in $@; do
+	case $_ARG in
+	-d)
+		_EXPORT_DATETIME=1
+		;;
+	-f=*)
+		_FILENAME="${_ARG#*=}"
+		;;
+	esac
+done
+
+_export_history

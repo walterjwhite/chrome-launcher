@@ -4,4 +4,4 @@ if [ "$#" -lt "1" ]; then
 	exitWithError "Session Name is required, ie. Ticket Name, Issue Id, etc." 1
 fi
 
-launch-chrome -r -n -i -s=$1
+launch-chrome -r -n -s=$1 -e

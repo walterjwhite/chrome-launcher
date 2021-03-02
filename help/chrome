@@ -1,0 +1,11 @@
+chrome
+    -s=* session name
+    -b=* browser cmd
+    -e   export history
+    -d   include date/time in history export
+
+    -p=* proxy server address
+    -r   enable remote control through chromedp protocol
+
+    -n   new browser instance
+    -i   insecure, disable browser security (chrome only)
