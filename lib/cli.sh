@@ -1,8 +1,8 @@
 #!/bin/sh
 
 _add_option() {
-	if [ "$#" -eq "2" ] && [ -n "$1" ]; then
-		_OPTIONS="$_OPTIONS --${2}=$1"
+	if [ $# -eq 2 ] && [ -n "$2" ]; then
+		_OPTIONS="$_OPTIONS --${1}=$2"
 	fi
 }
 
@@ -39,11 +39,11 @@ for _ARG in $@; do
 	esac
 done
 
-_add_option "$_BROWSER_REMOTE_PORT" "remote-debugging-port"
-_add_option "$_PROXY_SERVER" "proxy-server"
+_add_option "remote-debugging-port" "$_BROWSER_REMOTE_PORT"
+_add_option "proxy-server" "$_PROXY_SERVER"
 
-_SESSION_PATH=_APPLICATION_DATA_PATH_/$_SESSION_NAME
-mkdir -p $(dirname $_SESSION_PATH)
+_SESSION_FILE=_APPLICATION_DATA_PATH_/$_SESSION_NAME
+mkdir -p $(dirname $_SESSION_FILE)
 
 _new_instance
 

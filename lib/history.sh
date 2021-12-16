@@ -9,15 +9,26 @@ _export_history() {
 
 	_QUERY="SELECT $_COLUMNS FROM urls ORDER BY last_visit_time DESC"
 
-	_HISTORY_FILE=$_INSTANCE_DIRECTORY/Default/History
+	_SQLITE_DATABASE=$_INSTANCE_DIRECTORY/Default/History
 
 	if [ -n "$_FILENAME" ]; then
-		info "$_SESSION_NAME browser history >$_FILENAME"
-
-		mkdir -p $(dirname $_FILENAME)
-		sqlite3 -csv $_HISTORY_FILE "$_QUERY" >$_FILENAME
+		_export_history_to_file "$_FILENAME"
 	else
 		info "$_SESSION_NAME browser history"
-		sqlite3 -csv $_HISTORY_FILE "$_QUERY"
+
+		# if [ $(tty | grep "/dev/pts" -c) -gt 0 ]; then
+		# 	sqlite3 -csv $_SQLITE_DATABASE "$_QUERY"
+		# else
+		_HISTORY_FILE=_APPLICATION_DATA_PATH_/history/$_SESSION_NAME/$(date "+%Y%m%d%H%M%S")
+
+		_export_history_to_file "$_HISTORY_FILE"
+		# fi
 	fi
+}
+
+_export_history_to_file() {
+	info "$_SESSION_NAME browser history >$1"
+
+	mkdir -p $(dirname $1)
+	sqlite3 -csv $_SQLITE_DATABASE "$_QUERY" >$1 2>&1
 }
