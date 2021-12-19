@@ -13,7 +13,7 @@ _cleanup() {
 		_export_history
 
 		if [ -n "$_CLEANUP" ]; then
-			warn "Removing $_SESSION_FILE"
+			_warn "Removing $_SESSION_FILE"
 
 			# remove session directory
 			$_RUN_AS_COMMAND rm -rf $(head -1 $_SESSION_FILE)
@@ -27,11 +27,11 @@ _cleanup() {
 _launch() {
 	local _has_running_instances=$(ps xo comm | grep "^${_COMMAND}$" -c)
 	if [ "$_has_running_instances" -eq "0" ]; then
-		warn "Attempting to clean up leftover session (if it exists)"
+		_warn "Attempting to clean up leftover session (if it exists)"
 		_CLEANUP=1
 		_cleanup
 	else
-		warn "no cleanup"
+		_warn "no cleanup"
 	fi
 
 	# https://unix.stackexchange.com/questions/153210/cannot-redirect-output-from-sed

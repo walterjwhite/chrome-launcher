@@ -14,7 +14,7 @@ _export_history() {
 	if [ -n "$_FILENAME" ]; then
 		_export_history_to_file "$_FILENAME"
 	else
-		info "$_SESSION_NAME browser history"
+		_info "$_SESSION_NAME browser history"
 
 		# if [ $(tty | grep "/dev/pts" -c) -gt 0 ]; then
 		# 	sqlite3 -csv $_SQLITE_DATABASE "$_QUERY"
@@ -27,7 +27,7 @@ _export_history() {
 }
 
 _export_history_to_file() {
-	info "$_SESSION_NAME browser history >$1"
+	_info "$_SESSION_NAME browser history >$1"
 
 	mkdir -p $(dirname $1)
 	sqlite3 -csv $_SQLITE_DATABASE "$_QUERY" >$1 2>&1

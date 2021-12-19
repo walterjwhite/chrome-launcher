@@ -7,8 +7,8 @@ _new_instance() {
 		return
 	fi
 
-	doLog 'preparing instance'
-	_NEW_INSTANCE_DIRECTORY=$($_RUN_AS_COMMAND mktemp -d -t chrome/$_SESSION_NAME)
+	_doLog 'preparing instance'
+	_NEW_INSTANCE_DIRECTORY=$($_RUN_AS_COMMAND mktemp -d -t chrome.$_SESSION_NAME)
 
 	_add_option "user-data-dir" $_NEW_INSTANCE_DIRECTORY
 
@@ -16,7 +16,7 @@ _new_instance() {
 	$_RUN_AS_COMMAND mkdir -p ${_NEW_INSTANCE_DIRECTORY}/Default
 
 	if [ ! -e $_INSTANCE_DIRECTORY/Default/Preferences ]; then
-		exitWithError "$_INSTANCE_DIRECTORY/Default/Preferences does not exist" 1
+		_exitWithError "$_INSTANCE_DIRECTORY/Default/Preferences does not exist" 1
 	fi
 
 	$_SUDO_COMMAND cp -R $_INSTANCE_DIRECTORY/Default/Preferences "$_NEW_INSTANCE_DIRECTORY/Default/"
