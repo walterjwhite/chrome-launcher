@@ -6,17 +6,20 @@
 . _LIBRARY_PATH_/_APPLICATION_NAME_/cli.sh
 . _LIBRARY_PATH_/_APPLICATION_NAME_/history.sh
 
-trap _cleanup INT 0 2
+# https://www.shellscript.sh/trap.html
+trap _cleanup 0 1 2 3 6 15
 
 _cleanup() {
 	if [ -e $_SESSION_FILE ]; then
 		_export_history
 
 		if [ -n "$_CLEANUP" ]; then
-			_warn "Removing $_SESSION_FILE"
+			local _SESSION_DIRECTORY=$(head -1 $_SESSION_FILE)
+
+			_warn "Removing $_SESSION_FILE:$_SESSION_DIRECTORY"
 
 			# remove session directory
-			$_RUN_AS_COMMAND rm -rf $(head -1 $_SESSION_FILE)
+			$_RUN_AS_COMMAND rm -rf $_SESSION_DIRECTORY
 
 			# remove session conf
 			rm -rf $_SESSION_FILE
@@ -33,6 +36,8 @@ _launch() {
 	else
 		_warn "no cleanup"
 	fi
+
+	unset _CLEANUP
 
 	# https://unix.stackexchange.com/questions/153210/cannot-redirect-output-from-sed
 	# https://stackoverflow.com/questions/7161821/how-to-grep-a-continuous-stream
