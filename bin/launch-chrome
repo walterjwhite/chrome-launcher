@@ -1,14 +1,10 @@
 #!/bin/sh
 
-. _APPLICATION_CONFIG_PATH_
-
 . _LIBRARY_PATH_/_APPLICATION_NAME_/instance.sh
 . _LIBRARY_PATH_/_APPLICATION_NAME_/cli.sh
 . _LIBRARY_PATH_/_APPLICATION_NAME_/history.sh
 
 # https://www.shellscript.sh/trap.html
-trap _cleanup 0 1 2 3 6 15
-
 _cleanup() {
 	if [ -e $_SESSION_FILE ]; then
 		_export_history
