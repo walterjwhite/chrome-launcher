@@ -10,15 +10,10 @@ _cleanup() {
 		_export_history
 
 		if [ -n "$_CLEANUP" ]; then
-			local _SESSION_DIRECTORY=$(head -1 $_SESSION_FILE)
+			_warn "Removing $_INSTANCE_DIRECTORY"
 
-			_warn "Removing $_SESSION_FILE:$_SESSION_DIRECTORY"
-
-			# remove session directory
-			$_RUN_AS_COMMAND rm -rf $_SESSION_DIRECTORY
-
-			# remove session conf
-			rm -rf $_SESSION_FILE
+			# remove session directory and session file
+			$_CONF_RUN_AS_CMD rm -rf $_INSTANCE_DIRECTORY $_SESSION_FILE
 		fi
 	fi
 }
@@ -37,13 +32,15 @@ _launch() {
 
 	# https://unix.stackexchange.com/questions/153210/cannot-redirect-output-from-sed
 	# https://stackoverflow.com/questions/7161821/how-to-grep-a-continuous-stream
-	if [ ! -e $_SESSION_FILE ] || [ -n "$_BROWSER_REMOTE_PORT"]; then
+	if [ ! -e $_SESSION_FILE ] || [ -n "$_CONF_BROWSER_REMOTE_PORT"]; then
 		_CLEANUP=1
 
 		echo "$_INSTANCE_DIRECTORY" >>$_SESSION_FILE
 
-		$_COMMAND 2>&1 | $_GNU_GREP --line-buffered -Po "ws://127.0.0.1:[\d]{3,6}/devtools/browser/[a-z\d]{8}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{12}" \
+		# exit grep as soon as a match is found
+		$_COMMAND 2>&1 | $_CONF_GNU_GREP -m 1 --line-buffered -Po "ws://127.0.0.1:[\d]{3,6}/devtools/browser/[a-z\d]{8}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{4}-[a-z\d]{12}" \
 			>>$_SESSION_FILE
+		wait
 	else
 		$_COMMAND 2>/dev/null
 	fi

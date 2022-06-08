@@ -14,7 +14,7 @@ for _ARG in $@; do
 		_SESSION_NAME="${_ARG#*=}"
 		;;
 	-b=*)
-		_BROWSER="${_ARG#*=}"
+		_CONF_BROWSER="${_ARG#*=}"
 		;;
 	-e)
 		_EXPORT_HISTORY=1
@@ -27,7 +27,7 @@ for _ARG in $@; do
 		;;
 	# enable browser remote control
 	-r)
-		_BROWSER_REMOTE_PORT=0
+		_CONF_BROWSER_REMOTE_PORT=0
 		;;
 	# create new instance
 	-n)
@@ -39,7 +39,7 @@ for _ARG in $@; do
 	esac
 done
 
-_add_option "remote-debugging-port" "$_BROWSER_REMOTE_PORT"
+_add_option "remote-debugging-port" "$_CONF_BROWSER_REMOTE_PORT"
 _add_option "proxy-server" "$_PROXY_SERVER"
 
 _SESSION_FILE=_APPLICATION_DATA_PATH_/$_SESSION_NAME
@@ -47,4 +47,4 @@ mkdir -p $(dirname $_SESSION_FILE)
 
 _new_instance
 
-_COMMAND="$_RUN_AS_COMMAND $_BROWSER $_OPTIONS"
+_COMMAND="$_CONF_RUN_AS_CMD $_CONF_BROWSER $_OPTIONS"
