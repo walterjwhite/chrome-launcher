@@ -16,7 +16,7 @@ _new_instance() {
 	$_CONF_RUN_AS_CMD mkdir -p ${_INSTANCE_DIRECTORY}/Default
 
 	if [ ! -e $_CONFIGURATION_DIRECTORY/Default/Preferences ]; then
-		_exitWithError "$_CONFIGURATION_DIRECTORY/Default/Preferences does not exist" 1
+		_exit_with_error "$_CONFIGURATION_DIRECTORY/Default/Preferences does not exist" 1
 	fi
 
 	$_SUDO_COMMAND cp -R $_CONFIGURATION_DIRECTORY/Default/Preferences "$_INSTANCE_DIRECTORY/Default/"

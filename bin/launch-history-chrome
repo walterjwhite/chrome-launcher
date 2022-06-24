@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$#" -lt "1" ]; then
-	_exitWithError "Session Name is required, ie. Ticket Name, Issue Id, etc." 1
+	_exit_with_error "Session Name is required, ie. Ticket Name, Issue Id, etc." 1
 fi
 
 launch-chrome -r -n -s=$1 -e
