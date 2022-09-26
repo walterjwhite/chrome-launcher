@@ -1,7 +1,6 @@
 #!/bin/sh
 
-if [ "$#" -lt "1" ]; then
-	_exit_with_error "Session Name is required, ie. Ticket Name, Issue Id, etc." 1
-fi
+# this can be automatically set by launching a cmd inside of a workspace or by manually specifying it
+_require "$_CONTEXT" _CONTEXT
 
-launch-chrome -r -n -i -s=$1
+launch-chrome -r -n -i -s=$_CONTEXT
