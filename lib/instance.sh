@@ -23,7 +23,7 @@ _new_instance() {
 	cp -R $_CONFIGURATION_DIRECTORY/Default/Extensions "$_INSTANCE_DIRECTORY/Default/" 2>/dev/null
 
 	# automatically update configuration
-	_ESCAPED_INSTANCE_DIRECTORY=$(echo $_INSTANCE_DIRECTORY | sed -e "s/\//\\\\\//g")
+	_ESCAPED_INSTANCE_DIRECTORY=$(printf '%s' $_INSTANCE_DIRECTORY | sed -e "s/\//\\\\\//g")
 	mkdir -p $_INSTANCE_DIRECTORY/Downloads
 
 	$_CONF_GNU_SED -i "s/\"default_directory\":\".*\/Downloads\"}/\"default_directory\":\"${_ESCAPED_INSTANCE_DIRECTORY}\/Downloads\"}/" "$_NEW_INSTANCE_DIRECTORY/Default/Preferences"

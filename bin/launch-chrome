@@ -34,7 +34,7 @@ _launch() {
 	# https://stackoverflow.com/questions/7161821/how-to-grep-a-continuous-stream
 	if [ ! -e $_SESSION_FILE ]; then
 		_CLEANUP=1
-		echo "$_INSTANCE_DIRECTORY" >>$_SESSION_FILE
+		printf '%s\n' "$_INSTANCE_DIRECTORY" >>$_SESSION_FILE
 	fi
 
 	if [ -n "$_BROWSER_REMOTE_PORT" ]; then
