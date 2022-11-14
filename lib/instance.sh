@@ -16,7 +16,7 @@ _new_instance() {
 	mkdir -p ${_INSTANCE_DIRECTORY}/Default
 
 	if [ ! -e $_CONFIGURATION_DIRECTORY/Default/Preferences ]; then
-		_exit_with_error "$_CONFIGURATION_DIRECTORY/Default/Preferences does not exist" 1
+		_error "$_CONFIGURATION_DIRECTORY/Default/Preferences does not exist" 1
 	fi
 
 	cp -R $_CONFIGURATION_DIRECTORY/Default/Preferences "$_INSTANCE_DIRECTORY/Default/"
